@@ -15,7 +15,7 @@ tags:
 - description: StockItems list
   name: StockItems
 - description: StockTransactions Detail list
-  name: StockTransactionsDetails
+  name: StockTransactions
 paths:
   /items:
     get:
@@ -167,163 +167,36 @@ paths:
       x-accepts: application/json
       x-tags:
       - tag: StockItem
-  /locations:
-    get:
-      description: List of Locations
-      operationId: locations
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: '#/components/schemas/Location'
-                type: array
-          description: A paged array of Locations
-          headers:
-            x-next:
-              description: A link to the next page of responses
-              explode: false
-              schema:
-                type: string
-              style: simple
-        default:
-          $ref: '#/paths/~1items/get/responses/default'
-      summary: Retrieve all Locations
-      tags:
-      - Locations
-      x-accepts: application/json
-      x-tags:
-      - tag: Locations
-    post:
-      description: Add a Location
-      operationId: addLocation
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Location'
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Location'
-          description: A Location's data
-        default:
-          $ref: '#/paths/~1items/get/responses/default'
-      summary: Add a Location
-      tags:
-      - Locations
-      x-content-type: application/json
-      x-accepts: application/json
-      x-tags:
-      - tag: Locations
-  /locations/{id}:
-    delete:
-      description: Location data by id
-      operationId: locationDelete
-      parameters:
-      - description: resource id
-        explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          format: int64
-          type: integer
-        style: simple
-      responses:
-        "204":
-          description: A Location's deleted
-        default:
-          $ref: '#/paths/~1items/get/responses/default'
-      summary: Delete location data by id
-      tags:
-      - Location
-      x-accepts: application/json
-      x-tags:
-      - tag: Location
-    get:
-      description: Location data by id
-      operationId: location
-      parameters:
-      - description: resource id
-        explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          format: int64
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Location'
-          description: A Location's data
-        default:
-          $ref: '#/paths/~1items/get/responses/default'
-      summary: Retrieve location data by id
-      tags:
-      - Location
-      x-accepts: application/json
-      x-tags:
-      - tag: Location
-    put:
-      description: Update Location data by id
-      operationId: locationEdit
-      parameters:
-      - description: resource id
-        explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          format: int64
-          type: integer
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Location'
-        description: Update location properties to be changed
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Location'
-          description: A Location's data
-        default:
-          $ref: '#/paths/~1items/get/responses/default'
-      summary: Update location data by id
-      tags:
-      - Location
-      x-content-type: application/json
-      x-accepts: application/json
-      x-tags:
-      - tag: Location
-  /transactions:
+  /transactions/{type}:
     get:
       description: List of StockTransactions Details
       operationId: stockTransactionsDetail
       parameters:
-      - description: transaction type code
+      - description: transaction type code with enum value
+        explode: false
+        in: path
+        name: type
+        required: true
+        schema:
+          enum:
+          - all
+          - return
+          - release
+          - receive
+          type: string
+        style: simple
+      - description: store code | vendor code
         explode: true
         in: query
-        name: type
+        name: source
         required: false
         schema:
           type: string
         style: form
-      - description: store code
+      - description: store code | vendor code
         explode: true
         in: query
-        name: store
+        name: target
         required: false
         schema:
           type: string
@@ -375,18 +248,21 @@ paths:
           $ref: '#/paths/~1items/get/responses/default'
       summary: Retrieve all StockTransactions Detail
       tags:
-      - StockTransactionsDetails
+      - StockTransactions
       x-accepts: application/json
       x-tags:
-      - tag: StockTransactionsDetails
+      - tag: StockTransactions
     post:
       description: Add a StockTransaction
       operationId: addStockTransaction
+      parameters: []
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Transaction'
+              items:
+                $ref: '#/components/schemas/TransactionDetail'
+              type: array
       responses:
         "200":
           description: OK
@@ -418,7 +294,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Transaction'
+                items:
+                  $ref: '#/components/schemas/TransactionDetail'
+                type: array
           description: A StockTransaction's data
         default:
           $ref: '#/paths/~1items/get/responses/default'
@@ -428,118 +306,6 @@ paths:
       x-accepts: application/json
       x-tags:
       - tag: StockTransaction
-  /transactiontypes:
-    get:
-      description: List of TransactionTypes
-      operationId: transactionTypes
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: '#/components/schemas/TransactionType'
-                type: array
-          description: A paged array of TransactionTypes
-          headers:
-            x-next:
-              description: A link to the next page of responses
-              explode: false
-              schema:
-                type: string
-              style: simple
-        default:
-          $ref: '#/paths/~1items/get/responses/default'
-      summary: Retrieve all TransactionTypes
-      tags:
-      - TransactionTypes
-      x-accepts: application/json
-      x-tags:
-      - tag: TransactionTypes
-    post:
-      description: Add a TransactionType
-      operationId: addTransactionType
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TransactionType'
-      responses:
-        "200":
-          description: OK
-        default:
-          $ref: '#/paths/~1items/get/responses/default'
-      summary: Add a TransactionType
-      tags:
-      - TransactionTypes
-      x-content-type: application/json
-      x-accepts: application/json
-      x-tags:
-      - tag: TransactionTypes
-  /transactiontypes/{id}:
-    get:
-      description: TransactionType data by id
-      operationId: transactionType
-      parameters:
-      - description: resource id
-        explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          format: int64
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionType'
-          description: A TransactionType's data
-        default:
-          $ref: '#/paths/~1items/get/responses/default'
-      summary: Retrieve transactionType data by id
-      tags:
-      - TransactionType
-      x-accepts: application/json
-      x-tags:
-      - tag: TransactionType
-    put:
-      description: Update TransactionType data by id
-      operationId: transactionTypeEdit
-      parameters:
-      - description: resource id
-        explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          format: int64
-          type: integer
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TransactionType'
-        description: Update transactionType properties to be changed
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionType'
-          description: A TransactionType's data
-        default:
-          $ref: '#/paths/~1items/get/responses/default'
-      summary: Update transactionType data by id
-      tags:
-      - TransactionType
-      x-content-type: application/json
-      x-accepts: application/json
-      x-tags:
-      - tag: TransactionType
 components:
   schemas:
     Item:
@@ -564,10 +330,6 @@ components:
           type: string
       type: object
     Location:
-      example:
-        code: code
-        name: name
-        id: 0
       properties:
         id:
           format: int64
@@ -579,37 +341,26 @@ components:
       type: object
     Transaction:
       example:
-        transactionType:
-          code: code
-          name: name
-          id: 6
-        transactionDetails:
-        - null
-        - null
+        storeTransfer: true
+        vendorTransfer: true
         id: 0
-        store:
-          code: code
-          name: name
-          id: 0
-        Vendor:
-          code: code
-          name: name
-          id: 6
+        source: 6
         transactionDate: 2000-01-23
+        target: 1
       properties:
         id:
           format: int64
           type: integer
-        transactionType:
-          $ref: '#/components/schemas/TransactionType'
-        store:
-          $ref: '#/components/schemas/Location'
-        Vendor:
-          $ref: '#/components/schemas/Vendor'
-        transactionDetails:
-          items:
-            $ref: '#/components/schemas/TransactionDetail'
-          type: array
+        storeTransfer:
+          type: boolean
+        vendorTransfer:
+          type: boolean
+        source:
+          format: int64
+          type: integer
+        target:
+          format: int64
+          type: integer
         transactionDate:
           format: date
           type: string
@@ -624,25 +375,14 @@ components:
           name: name
           id: 0
           creationDate: 2000-01-23
-        quantity: 1
+        quantity: 5
         transaction:
-          transactionType:
-            code: code
-            name: name
-            id: 6
-          transactionDetails:
-          - null
-          - null
+          storeTransfer: true
+          vendorTransfer: true
           id: 0
-          store:
-            code: code
-            name: name
-            id: 0
-          Vendor:
-            code: code
-            name: name
-            id: 6
+          source: 6
           transactionDate: 2000-01-23
+          target: 1
       properties:
         transaction:
           $ref: '#/components/schemas/Transaction'
@@ -651,20 +391,6 @@ components:
         quantity:
           format: int32
           type: integer
-      type: object
-    TransactionType:
-      example:
-        code: code
-        name: name
-        id: 6
-      properties:
-        id:
-          format: int64
-          type: integer
-        code:
-          type: string
-        name:
-          type: string
       type: object
     Vendor:
       example:
