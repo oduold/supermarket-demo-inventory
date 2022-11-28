@@ -34,7 +34,7 @@ the store, releases items to the supermarket floor for selling and returns spoil
 ## Installation and Use
 
 The following installation is on a linux distribution.
-Clone this repository or download the ZiP. You can flow the [Help Guides](HELP.md) to get help on how to clone.
+Clone this repository or download the ZiP. You can follow the [Help Guides](HELP.md) to get help on how to clone.
 
 ### Gradle
 
