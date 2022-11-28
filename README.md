@@ -12,7 +12,8 @@ the store, releases items to the supermarket floor for selling and returns spoil
 * server port set to 8080
 * [base url](http://localhost:8080) redirect to [swagger-ui view](http://localhost:8080/swagger-ui)
     * Provides documentation of the API endpoints as well as sample payloads.
-* H2 database is used for database persistence
+* H2 database is used for database persistence - [H2 Console](http://localhost:8080/h2-console/)
+* H2 database configurations are available in ```application.properties``` file
 * data.sql is processed on starting the spring boot up to initialise test data
 * logging of the application sql queries is enabled
 
