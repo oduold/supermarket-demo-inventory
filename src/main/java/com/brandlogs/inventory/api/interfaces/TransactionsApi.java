@@ -113,7 +113,6 @@ public interface TransactionsApi {
      * @param type transaction type code with enum value (required)
      * @param source store code | vendor code (optional)
      * @param target store code | vendor code (optional)
-     * @param since Transaction Date from to date (optional)
      * @param from Transaction Date from (optional)
      * @param to Transaction Date to (optional)
      * @return A paged array of StockTransaction Details (status code 200)

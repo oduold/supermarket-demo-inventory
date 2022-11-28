@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Controller
 @RequestMapping("${openapi.brandlogsSupermarket.base-path:}")
@@ -39,13 +40,12 @@ public class TransactionsApiController implements TransactionsApi {
     @Override
     public ResponseEntity<Void> addStockTransaction(Transaction.TransactionTypeEnum type,List<TransactionDetail> transactionDetails) {
         Transaction transaction = transactionDetails.get(0).getTransaction();
-        //do transactions
-        //if vendor_transfer exist in transaction  we know its either return or receive
-        //create only one stock transaction transfer
-        //else
-        //we are doing a release
-        //create two stock transaction transfers
-        return TransactionsApi.super.addStockTransaction(type, transactionDetails);
+        transaction.setTransactionType(type);
+        if(transaction.getVendorTransfer() == null) {
+            transaction.setVendorTransfer(false);
+        }
+        service.create(transaction,transactionDetails);
+        return ResponseEntity.ok().build();
     }
 
     @Override

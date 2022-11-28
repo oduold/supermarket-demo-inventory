@@ -9,7 +9,7 @@ import javax.validation.Valid;
 @Entity
 public class TransactionDetail {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
