@@ -21,9 +21,9 @@ the store, releases items to the supermarket floor for selling and returns spoil
 1. The application allows users to perform CRUD operations on store items i.e.,
    Create items, Read items (list all items and fetch a single item), Update items and Delete
    items.
-2. _**TODO**_ - Receive item(s) into the store 
-3. _**TODO**_ - Release item(s) into supermarket store
-4. _**TODO**_ - Return spoilt items to vendors
+2. Receive item(s) into the store 
+3. Release item(s) into supermarket store
+4. Return spoilt items to vendors - [Sample POST URL](http://localhost:8080/transactions/returns)
 5. List items created today
 6. List items received from vendors in the store in the last week - [Sample URL](http://localhost:8080/transactions/items?type=receipts&vendor=true&from=2022-11-21&to=2022-11-29) to implement
    * API endpoint [stockTransactionsItems](http://localhost:8080/swagger-ui/index.html#/StockItems/stockTransactionsItems)
