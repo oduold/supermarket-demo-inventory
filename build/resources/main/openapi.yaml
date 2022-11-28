@@ -1,0 +1,435 @@
+openapi: 3.0.0
+info:
+  contact:
+    name: Donald O. Oduol
+    url: https://github.com/oduold
+  description: Web inventory API for a supermarket store
+  title: Brandlogs Supermarket API
+  version: 0.0.1
+servers:
+- description: Development Server
+  url: http://localhost:8080
+tags:
+- description: Stock Item operations
+  name: StockItem
+- description: StockItems list
+  name: StockItems
+- description: StockTransactions Detail list
+  name: StockTransactions
+paths:
+  /items:
+    get:
+      description: List of StockItems
+      operationId: stockItems
+      parameters:
+      - description: Date of creation of resource
+        explode: true
+        in: query
+        name: created
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Item'
+                type: array
+          description: A paged array of StockItems
+          headers:
+            x-next:
+              description: A link to the next page of responses
+              explode: false
+              schema:
+                type: string
+              style: simple
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: http unexpected errors
+      summary: Retrieve all StockItems
+      tags:
+      - StockItems
+      x-accepts: application/json
+      x-tags:
+      - tag: StockItems
+    post:
+      description: Add a StockItems
+      operationId: addStockItem
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        "200":
+          description: OK
+        default:
+          $ref: '#/paths/~1items/get/responses/default'
+      summary: Add a StockItem
+      tags:
+      - StockItems
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: StockItems
+  /items/{id}:
+    delete:
+      description: Stock Item data by id
+      operationId: itemDelete
+      parameters:
+      - description: resource id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          description: A Stock Item's deleted
+        default:
+          $ref: '#/paths/~1items/get/responses/default'
+      summary: Delete stock item data by id
+      tags:
+      - StockItem
+      x-accepts: application/json
+      x-tags:
+      - tag: StockItem
+    get:
+      description: Stock Item data by id
+      operationId: item
+      parameters:
+      - description: resource id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: A Stock Item's data
+        default:
+          $ref: '#/paths/~1items/get/responses/default'
+      summary: Retrieve stock item data by id
+      tags:
+      - StockItem
+      x-accepts: application/json
+      x-tags:
+      - tag: StockItem
+    put:
+      description: Update Stock Item data by id
+      operationId: itemEdit
+      parameters:
+      - description: resource id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+        description: Update stock item properties to be changed
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: A Stock Item's data
+        default:
+          $ref: '#/paths/~1items/get/responses/default'
+      summary: Update stock item data by id
+      tags:
+      - StockItem
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: StockItem
+  /transactions/{type}:
+    get:
+      description: List of StockTransactions Details
+      operationId: stockTransactionsDetail
+      parameters:
+      - description: transaction type code with enum value
+        explode: false
+        in: path
+        name: type
+        required: true
+        schema:
+          enum:
+          - all
+          - return
+          - release
+          - receive
+          type: string
+        style: simple
+      - description: store code | vendor code
+        explode: true
+        in: query
+        name: source
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: store code | vendor code
+        explode: true
+        in: query
+        name: target
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Transaction Date from to date
+        explode: true
+        in: query
+        name: since
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - description: Transaction Date from
+        explode: true
+        in: query
+        name: from
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - description: Transaction Date to
+        explode: true
+        in: query
+        name: to
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/TransactionDetail'
+                type: array
+          description: A paged array of StockTransaction Details
+          headers:
+            x-next:
+              description: A link to the next page of responses
+              explode: false
+              schema:
+                type: string
+              style: simple
+        default:
+          $ref: '#/paths/~1items/get/responses/default'
+      summary: Retrieve all StockTransactions Detail
+      tags:
+      - StockTransactions
+      x-accepts: application/json
+      x-tags:
+      - tag: StockTransactions
+    post:
+      description: Add a StockTransaction
+      operationId: addStockTransaction
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/TransactionDetail'
+              type: array
+      responses:
+        "200":
+          description: OK
+        default:
+          $ref: '#/paths/~1items/get/responses/default'
+      summary: Add a StockTransaction
+      tags:
+      - StockTransactions
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: StockTransactions
+  /transactions/{id}:
+    get:
+      description: StockTransaction data by id
+      operationId: stockTransaction
+      parameters:
+      - description: resource id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/TransactionDetail'
+                type: array
+          description: A StockTransaction's data
+        default:
+          $ref: '#/paths/~1items/get/responses/default'
+      summary: Retrieve stock transaction data by id
+      tags:
+      - StockTransaction
+      x-accepts: application/json
+      x-tags:
+      - tag: StockTransaction
+components:
+  schemas:
+    Item:
+      example:
+        vendor:
+          code: code
+          name: name
+          id: 6
+        name: name
+        id: 0
+        creationDate: 2000-01-23
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        vendor:
+          $ref: '#/components/schemas/Vendor'
+        creationDate:
+          format: date
+          type: string
+      type: object
+    Location:
+      properties:
+        id:
+          format: int64
+          type: integer
+        code:
+          type: string
+        name:
+          type: string
+      type: object
+    Transaction:
+      example:
+        storeTransfer: true
+        vendorTransfer: true
+        id: 0
+        source: 6
+        transactionDate: 2000-01-23
+        target: 1
+      properties:
+        id:
+          format: int64
+          type: integer
+        storeTransfer:
+          type: boolean
+        vendorTransfer:
+          type: boolean
+        source:
+          format: int64
+          type: integer
+        target:
+          format: int64
+          type: integer
+        transactionDate:
+          format: date
+          type: string
+      type: object
+    TransactionDetail:
+      example:
+        Item:
+          vendor:
+            code: code
+            name: name
+            id: 6
+          name: name
+          id: 0
+          creationDate: 2000-01-23
+        quantity: 5
+        transaction:
+          storeTransfer: true
+          vendorTransfer: true
+          id: 0
+          source: 6
+          transactionDate: 2000-01-23
+          target: 1
+      properties:
+        transaction:
+          $ref: '#/components/schemas/Transaction'
+        Item:
+          $ref: '#/components/schemas/Item'
+        quantity:
+          format: int32
+          type: integer
+      type: object
+    Vendor:
+      example:
+        code: code
+        name: name
+        id: 6
+      properties:
+        id:
+          format: int64
+          type: integer
+        code:
+          type: string
+        name:
+          type: string
+      type: object
+    Inventory:
+      properties:
+        stockItem:
+          $ref: '#/components/schemas/Item'
+        Location:
+          $ref: '#/components/schemas/Location'
+        quantity:
+          format: int64
+          type: integer
+        created:
+          format: date
+          type: string
+        modified:
+          format: date
+          type: string
+      type: object
+    Error:
+      properties:
+        code:
+          format: int32
+          type: integer
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
