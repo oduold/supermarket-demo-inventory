@@ -1,22 +1,23 @@
 # Read Me First
 The following was discovered as part of building this project:
-
-* The JVM level was changed from '11' to '17', review the [JDK Version Range](https://github.com/spring-projects/spring-framework/wiki/Spring-Framework-Versions#jdk-version-range) on the wiki for more details.
-* The original package name 'com.brandlogs.inventory.api.brandlogs-api' is invalid and this project uses 'com.brandlogs.inventory.api.brandlogsapi' instead.
+* JVM version used was Version 11
+* Source compatibility is set to Java Version 1.8
 
 # Getting Started
 
 ### Reference Documentation
 For further reference, please consider the following sections:
 
+* [The OpenAPI Specification](https://swagger.io/resources/open-api/)
+* [Swagger UI](https://swagger.io/tools/swagger-ui/)
 * [Official Gradle documentation](https://docs.gradle.org)
 * [Spring Boot Gradle Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/3.0.0/gradle-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/3.0.0/gradle-plugin/reference/html/#build-image)
 * [Spring Web](https://docs.spring.io/spring-boot/docs/3.0.0/reference/htmlsingle/#web)
 
 ### Guides
 The following guides illustrate how to use some features concretely:
 
+* [Cloning a repository](git@github.com:oduold/supermarket-demo-inventory.git)
 * [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
 * [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
 * [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
