@@ -59,9 +59,6 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private TransactionTypeEnum transactionType;
 
-    @JsonProperty("storeTransfer")
-    private Boolean storeTransfer;
-
     @JsonProperty("vendorTransfer")
     private Boolean vendorTransfer;
 
@@ -107,25 +104,6 @@ public class Transaction {
 
     public void setTransactionType(TransactionTypeEnum transactionType) {
         this.transactionType = transactionType;
-    }
-
-    public Transaction storeTransfer(Boolean storeTransfer) {
-        this.storeTransfer = storeTransfer;
-        return this;
-    }
-
-    /**
-     * Get storeTransfer
-     * @return storeTransfer
-     */
-
-    @Schema(name = "storeTransfer")
-    public Boolean getStoreTransfer() {
-        return storeTransfer;
-    }
-
-    public void setStoreTransfer(Boolean storeTransfer) {
-        this.storeTransfer = storeTransfer;
     }
 
     public Transaction vendorTransfer(Boolean vendorTransfer) {
@@ -210,7 +188,6 @@ public class Transaction {
         sb.append("class Transaction {\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    transactionType: ").append(toIndentedString(transactionType)).append("\n");
-        sb.append("    storeTransfer: ").append(toIndentedString(storeTransfer)).append("\n");
         sb.append("    vendorTransfer: ").append(toIndentedString(vendorTransfer)).append("\n");
         sb.append("    source: ").append(toIndentedString(source)).append("\n");
         sb.append("    target: ").append(toIndentedString(target)).append("\n");

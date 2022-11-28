@@ -6,6 +6,7 @@ import com.brandlogs.inventory.api.repository.TransactionDetailRepository;
 import com.brandlogs.inventory.api.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class TransactionService {
     @Autowired
     private TransactionDetailRepository transactionDetailRepository;
 
-    public Transaction create(Transaction transaction) {
+    private Transaction create(Transaction transaction) {
         return repository.save(transaction);
     }
 
@@ -46,7 +47,15 @@ public class TransactionService {
         return transactionDetails;
     }
 
-    public List<TransactionDetail> queryStockTransactionsByDate(LocalDate since, LocalDate now) {
-        return new ArrayList<>();
+    @Transactional
+    public void create(Transaction transaction, List<TransactionDetail> transactionDetails) {
+        //save transaction
+        Transaction newTransaction = this.create(transaction);
+        List<TransactionDetail> transactionDetailList = new ArrayList<>(transactionDetails);
+        transactionDetailList.forEach(td -> {
+            td.setTransaction(newTransaction);
+        });
+        transactionDetailRepository.saveAll(transactionDetailList);
+
     }
 }

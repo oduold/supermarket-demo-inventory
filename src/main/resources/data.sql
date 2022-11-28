@@ -27,20 +27,19 @@ transaction_type VARCHAR(255) CHECK( transaction_type IN ('receipts','releases',
 source bigint NULL,
 target bigint NULL,
 vendor_transfer BOOLEAN DEFAULT false,
-store_transfer BOOLEAN DEFAULT false,
 transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 
-INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer,store_transfer) VALUES('returns',1,1,true,false);
-INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer,store_transfer) VALUES('receipts',1,2,false,true);
-INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer,store_transfer) VALUES('releases',2,1,false,true);
+INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer) VALUES('returns',1,1,true);
+INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer) VALUES('receipts',1,2,false);
+INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer) VALUES('releases',2,1,false);
 
-INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer,store_transfer) VALUES('returns',2,1,true,false);
-INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer,store_transfer) VALUES('receipts',2,1,false,true);
-INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer,store_transfer) VALUES('releases',1,2,false,true);
+INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer) VALUES('returns',2,1,true);
+INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer) VALUES('receipts',2,1,false);
+INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer) VALUES('releases',1,2,false);
 
-INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer,store_transfer,transaction_date) VALUES('returns',1,1,true,false,'2022-10-10');
-INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer,store_transfer,transaction_date) VALUES('receipts',1,2,true,false, '2022-11-10');
-INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer,store_transfer,transaction_date) VALUES('releases',2,1,false,true, '2022-11-10');
+INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer,transaction_date) VALUES('returns',1,1,true,'2022-10-10');
+INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer,transaction_date) VALUES('receipts',1,2,true,'2022-11-10');
+INSERT INTO stock_transaction(transaction_type,source,target,vendor_transfer,transaction_date) VALUES('releases',2,1,false,'2022-11-10');
 
 
 DROP TABLE transaction_detail IF EXISTS;
