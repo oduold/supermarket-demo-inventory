@@ -2,19 +2,15 @@ package com.brandlogs.inventory.api.service;
 
 import com.brandlogs.inventory.api.model.Transaction;
 import com.brandlogs.inventory.api.model.TransactionDetail;
-import com.brandlogs.inventory.api.repository.CustomTransactionRepository;
 import com.brandlogs.inventory.api.repository.TransactionDetailRepository;
 import com.brandlogs.inventory.api.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static com.brandlogs.inventory.api.repository.TransactionSpecification.hasType;
 
 @Service
 public class TransactionService {
@@ -42,9 +38,9 @@ public class TransactionService {
         return transactionDetailRepository.findAll();
     }
 
-    public List<TransactionDetail> queryStockTransactionsByType(Transaction.TransactionTypeEnum type, LocalDate from,
-                                                                LocalDate to,String source, String target) {
-        List<Transaction> transactions = repository.findTransactionDetailsByType(type,from,to,source,target);
+    public List<TransactionDetail> queryStockTransactionsByType(Transaction.TransactionTypeEnum type, boolean vendor, LocalDate from,
+                                                                LocalDate to, String source, String target) {
+        List<Transaction> transactions = repository.findTransactionDetailsByType(type,vendor,from,to,source,target);
         List<TransactionDetail> transactionDetails = new ArrayList<>();
         transactions.forEach(t -> transactionDetails.addAll(transactionDetailRepository.findByTransactionId(t.getId())));
         return transactionDetails;

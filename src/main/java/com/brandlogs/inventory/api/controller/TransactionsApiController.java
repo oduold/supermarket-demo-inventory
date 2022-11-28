@@ -55,20 +55,18 @@ public class TransactionsApiController implements TransactionsApi {
     }
 
     @Override
-    public ResponseEntity<List<Item>> stockTransactionsItems(Transaction.TransactionTypeEnum type, String source,
+    public ResponseEntity<List<Item>> stockTransactionsItems(Transaction.TransactionTypeEnum type, boolean vendor, String source,
          String target, LocalDate from, LocalDate to) {
         List<Item> items = new ArrayList<>();
         List<TransactionDetail> transactionDetails;
-        if(type == null && source == null && target == null && from == null && to == null) {
+        if(type == null && source == null && target == null && from == null && to == null && !vendor) {
             transactionDetails = service.findAll();
         }
         else if ( Objects.equals(type,Transaction.TransactionTypeEnum.returns) ||
                 Objects.equals(type,Transaction.TransactionTypeEnum.receipts) ||
-                Objects.equals(type, Transaction.TransactionTypeEnum.releases)){
-            transactionDetails = service.queryStockTransactionsByType(type, from, to, source, target);
-        }
-        else if(from != null || to != null) {
-            transactionDetails = service.queryStockTransactionsByType(type, from,to, source, target);
+                Objects.equals(type, Transaction.TransactionTypeEnum.releases) ||
+                from != null || to != null){
+            transactionDetails = service.queryStockTransactionsByType(type, vendor,from, to, source, target);
         }
         else{
             return ResponseEntity.badRequest().build();

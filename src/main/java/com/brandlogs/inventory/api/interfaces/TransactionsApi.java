@@ -137,6 +137,7 @@ public interface TransactionsApi {
     )
     default ResponseEntity<List<Item>> stockTransactionsItems(
             @Parameter(name = "type", description = "transaction type code with enum value") @Valid @RequestParam(value = "type", required = false)Transaction.TransactionTypeEnum type,
+            @Parameter(name = "vendor", description = "is it a vendor based stock items transfer") @Valid @RequestParam(value = "vendor", required = false, defaultValue = "false") boolean vendor,
             @Parameter(name = "source", description = "store code | vendor code") @Valid @RequestParam(value = "source", required = false) String source,
             @Parameter(name = "target", description = "store code | vendor code") @Valid @RequestParam(value = "target", required = false) String target,
             @Parameter(name = "from", description = "Transaction Date from") @Valid @RequestParam(value = "from", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,

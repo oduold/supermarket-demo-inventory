@@ -1,6 +1,7 @@
 package com.brandlogs.inventory.api.repository;
 
 import com.brandlogs.inventory.api.model.Transaction;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,8 +21,8 @@ public class CustomTransactionRepositoryImpl implements CustomTransactionReposit
     EntityManager em;
 
     @Override
-    public List<Transaction> findTransactionDetailsByType(Transaction.TransactionTypeEnum type, LocalDate from,
-                                                                LocalDate to, String source, String target) {
+    public List<Transaction> findTransactionDetailsByType(Transaction.TransactionTypeEnum type, boolean vendor, LocalDate from,
+                                                          LocalDate to, String source, String target) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Transaction> transactionCriteriaQuery = cb.createQuery(Transaction.class);
         Root<Transaction> transactionRoot = transactionCriteriaQuery.from(Transaction.class);
@@ -40,6 +41,9 @@ public class CustomTransactionRepositoryImpl implements CustomTransactionReposit
         }
         if (to != null) {
             predicates.add(cb.lessThanOrEqualTo(transactionRoot.<LocalDate>get("transactionDate"),cb.literal(to)));
+        }
+        if(vendor) {
+            predicates.add(cb.equal(transactionRoot.<Boolean>get("vendorTransfer"),true));
         }
         transactionCriteriaQuery.where(predicates.toArray(new Predicate[0]));
         return em.createQuery(transactionCriteriaQuery).getResultList();
