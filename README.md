@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a minimal feature implementation of an sample inventory system.
+This is a minimal feature implementation of a sample inventory system.
 
 A store receives items into
 the store, releases items to the supermarket floor for selling and returns spoilt items to vendors.
