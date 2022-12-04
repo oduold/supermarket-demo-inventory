@@ -1,6 +1,8 @@
 package com.brandlogs.inventory.api.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,29 +17,61 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "transaction_type_id")
+    /**
+     * Gets or Sets transactionType
+     */
+    public enum TransactionTypeEnum {
+        receipts("receipts"),
+
+        releases("releases"),
+
+        returns("returns");
+
+        private final String value;
+
+        TransactionTypeEnum(String value) {
+            this.value = value;
+        }
+
+        @JsonValue
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(value);
+        }
+
+        @JsonCreator
+        public static TransactionTypeEnum fromValue(String value) {
+            for (TransactionTypeEnum b : TransactionTypeEnum.values()) {
+                if (b.value.equals(value)) {
+                    return b;
+                }
+            }
+            throw new IllegalArgumentException("Unexpected value '" + value + "'");
+        }
+    }
+
     @JsonProperty("transactionType")
-    private TransactionType transactionType;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TransactionTypeEnum transactionType;
 
-    @ManyToOne
-    @JoinColumn(name = "store_id")
-    @JsonProperty("store")
-    private Location store;
+    @JsonProperty("vendorTransfer")
+    private Boolean vendorTransfer;
 
-    @ManyToOne
-    @JoinColumn(name = "vendor_id")
-    @JsonProperty("Vendor")
-    private Vendor vendor;
+    @JsonProperty("source")
+    private Long source;
 
+    @JsonProperty("target")
+    private Long target;
     @JsonProperty("transactionDate")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @Column(insertable = false,updatable = false)
     private LocalDate transactionDate;
 
-    public Transaction id(Long id) {
-        this.id = id;
-        return this;
-    }
 
     /**
      * Get id
@@ -53,7 +87,7 @@ public class Transaction {
         this.id = id;
     }
 
-    public Transaction transactionType(TransactionType transactionType) {
+    public Transaction transactionType(TransactionTypeEnum transactionType) {
         this.transactionType = transactionType;
         return this;
     }
@@ -62,52 +96,71 @@ public class Transaction {
      * Get transactionType
      * @return transactionType
      */
-    @Valid
+
     @Schema(name = "transactionType")
-    public TransactionType getTransactionType() {
+    public TransactionTypeEnum getTransactionType() {
         return transactionType;
     }
 
-    public void setTransactionType(TransactionType transactionType) {
+    public void setTransactionType(TransactionTypeEnum transactionType) {
         this.transactionType = transactionType;
     }
 
-    public Transaction store(Location store) {
-        this.store = store;
+    public Transaction vendorTransfer(Boolean vendorTransfer) {
+        this.vendorTransfer = vendorTransfer;
         return this;
     }
 
     /**
-     * Get store
-     * @return store
+     * Get vendorTransfer
+     * @return vendorTransfer
      */
-    @Valid
-    @Schema(name = "store")
-    public Location getStore() {
-        return store;
+
+    @Schema(name = "vendorTransfer")
+    public Boolean getVendorTransfer() {
+        return vendorTransfer;
     }
 
-    public void setStore(Location store) {
-        this.store = store;
+    public void setVendorTransfer(Boolean vendorTransfer) {
+        this.vendorTransfer = vendorTransfer;
     }
 
-    public Transaction vendor(Vendor vendor) {
-        this.vendor = vendor;
+    public Transaction source(Long source) {
+        this.source = source;
         return this;
     }
 
     /**
-     * Get vendor
-     * @return vendor
+     * Get source
+     * @return source
      */
-    @Valid
-    @Schema(name = "Vendor")
-    public Vendor getVendor() {
-        return vendor;
+
+    @Schema(name = "source")
+    public Long getSource() {
+        return source;
     }
 
-    public void setVendor(Vendor vendor) {
-        this.vendor = vendor;
+    public void setSource(Long source) {
+        this.source = source;
+    }
+
+    public Transaction target(Long target) {
+        this.target = target;
+        return this;
+    }
+
+    /**
+     * Get target
+     * @return target
+     */
+
+    @Schema(name = "target")
+    public Long getTarget() {
+        return target;
+    }
+
+    public void setTarget(Long target) {
+        this.target = target;
     }
 
     public Transaction transactionDate(LocalDate transactionDate) {
@@ -135,8 +188,9 @@ public class Transaction {
         sb.append("class Transaction {\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    transactionType: ").append(toIndentedString(transactionType)).append("\n");
-        sb.append("    store: ").append(toIndentedString(store)).append("\n");
-        sb.append("    vendor: ").append(toIndentedString(vendor)).append("\n");
+        sb.append("    vendorTransfer: ").append(toIndentedString(vendorTransfer)).append("\n");
+        sb.append("    source: ").append(toIndentedString(source)).append("\n");
+        sb.append("    target: ").append(toIndentedString(target)).append("\n");
         sb.append("    transactionDate: ").append(toIndentedString(transactionDate)).append("\n");
         sb.append("}");
         return sb.toString();
