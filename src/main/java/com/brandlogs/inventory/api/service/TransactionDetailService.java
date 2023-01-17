@@ -12,11 +12,14 @@ import java.util.Optional;
 
 @Service
 public class TransactionDetailService {
-    @Autowired
-    private TransactionDetailRepository repository;
+    final private TransactionDetailRepository repository;
 
-    @Autowired
-    private TransactionRepository transactionRepository;
+    final private TransactionRepository transactionRepository;
+
+    public TransactionDetailService(TransactionDetailRepository repository, TransactionRepository transactionRepository) {
+        this.repository = repository;
+        this.transactionRepository = transactionRepository;
+    }
 
     public List<TransactionDetail> saveAll(Transaction transaction, List<TransactionDetail> transactionDetails) {
         Optional<Transaction> t = Optional.of(transactionRepository.findById(transaction.getId()).orElseGet(

@@ -15,11 +15,14 @@ import java.util.Optional;
 
 @Service
 public class TransactionService {
-    @Autowired
-    private TransactionRepository repository;
+    final private TransactionRepository repository;
 
-    @Autowired
-    private TransactionDetailRepository transactionDetailRepository;
+    final private TransactionDetailRepository transactionDetailRepository;
+
+    public TransactionService(TransactionRepository repository, TransactionDetailRepository transactionDetailRepository) {
+        this.repository = repository;
+        this.transactionDetailRepository = transactionDetailRepository;
+    }
 
     private Transaction create(Transaction transaction) {
         return repository.save(transaction);
