@@ -22,6 +22,35 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+
+def gitHooksFolder = new File( '.git/hooks' )
+
+
+def gitHooks = tasks.register('git-hooks') {
+	doFirst {
+		println 'check if ' + gitHooksFolder + ' exists'
+		if(!gitHooksFolder.exists()) {
+			println 'creating ' + gitHooksFolder
+			gitHooksFolder.mkdirs()
+		}
+		copy {
+			println 'copying pre-commit hook'
+			from 'hooks/git-pre-commit.hook'
+			into '.git/hooks'
+			include 'git-pre-commit.hook'
+			rename ('git-pre-commit.hook', 'pre-commit')
+		}
+	}
+	doLast {
+		exec {
+			println 'changing file permissions for pre-commit hooks'
+    		commandLine('chmod', 'a+x', '.git/hooks/pre-commit')
+		}
+	}
+}
+
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
+

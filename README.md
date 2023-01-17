@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a minimal feature implementation of an sample inventory system.
+This is a minimal feature implementation of a sample inventory system.
 
 A store receives items into
 the store, releases items to the supermarket floor for selling and returns spoilt items to vendors.
@@ -12,7 +12,8 @@ the store, releases items to the supermarket floor for selling and returns spoil
 * server port set to 8080
 * [base url](http://localhost:8080) redirect to [swagger-ui view](http://localhost:8080/swagger-ui)
     * Provides documentation of the API endpoints as well as sample payloads.
-* H2 database is used for database persistence
+* H2 database is used for database persistence - [H2 Console](http://localhost:8080/h2-console/)
+* H2 database configurations are available in ```application.properties``` file
 * data.sql is processed on starting the spring boot up to initialise test data
 * logging of the application sql queries is enabled
 
@@ -34,7 +35,7 @@ the store, releases items to the supermarket floor for selling and returns spoil
 ## Installation and Use
 
 The following installation is on a linux distribution.
-Clone this repository or download the ZiP. You can flow the [Help Guides](HELP.md) to get help on how to clone.
+Clone this repository or download the ZiP. You can follow the [Help Guides](HELP.md) to get help on how to clone.
 
 ### Gradle
 
